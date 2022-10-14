@@ -1,0 +1,58 @@
+server:
+  port: 8090
+spring:
+  jpa:
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+    database: MYSQL
+    hibernate:
+      ddl-auto: update
+  datasource:
+    url: jdbc:mysql://${MYSQL_HOST:localhost}:3306/client-service?useUnicode=true&characterEncoding=utf8&serverTimezone=UTC
+    username: root
+    password:
+  application:
+    name: client-service
+  zipkin:
+    baseUrl: http://localhost:9411
+  sleuth:
+    sampler:
+      probability: 1.0
+
+keycloak:
+  realm: Formation-ms
+  auth-server-url: http://localhost:8080/auth
+  resource: client-app
+  credentials:
+    secret: d6bNhEf1tk4GQH3TSEkmBMwvz2Vc0yyz
+  principal-attribute: preferred_username
+  bearer-only: true
+    
+springdoc:
+  packages-to-scan:
+  - ma.omnishore.clients.api  
+    
+swagger:
+  title: CLIENT SERVICE
+  description: This page lists all the rest apis for Clients APP.
+  version: 0.0.1
+  contact-name: Monssif Echadli
+  contact-url: www.s2m.ma
+  contact-email: mechadli@s2m.ma
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka
+
+---
+spring:
+  profiles: test
+  datasource:
+        url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+        username: sa
+        password: sa
+        driver-class-name: org.h2.Driver
+  jpa:
+        database-platform: org.hibernate.dialect.H2Dialect
+        hibernate :
+          ddl-auto: create
